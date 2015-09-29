@@ -1,0 +1,1 @@
+from ojos.django.db.models.fields.files import FileField  # NOQA
