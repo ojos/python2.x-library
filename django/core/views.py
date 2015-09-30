@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
 
 from ojos.misc.decorators import error_response
-from ojos.misc.exceptions import ResponseException
+from ojos.misc.exceptions import MethodNotAllowedException
 
 
 class BaseView(View):
@@ -57,31 +57,31 @@ class BaseView(View):
 
     @error_response()
     def get(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
     @error_response()
     def post(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
     @error_response()
     def head(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
     @error_response()
     def options(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
     @error_response()
     def put(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
     @error_response()
     def delete(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
     @error_response()
     def trace(self, request, *args, **kwargs):
-        raise ResponseException(405, 'METHOD NOT ALLOWED')
+        raise MethodNotAllowedException()
 
 
 class DownloadView(BaseView):

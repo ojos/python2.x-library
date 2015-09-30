@@ -43,7 +43,9 @@ def utc_date(value=None):
 
 
 class TimeZoneInfo(object):
+
     class UtcTzinfo(datetime.tzinfo):
+
         def utcoffset(self, dt):
             return datetime.timedelta(0)
 
@@ -57,6 +59,7 @@ class TimeZoneInfo(object):
             return 'UTC'
 
     class JstTzinfo(datetime.tzinfo):
+
         def utcoffset(self, dt):
             return datetime.timedelta(hours=9)
 

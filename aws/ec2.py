@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+import json
 import urllib2
 from boto import ec2
 from boto.exception import EC2ResponseError
 
+EC2_USER_DATA_URL = 'http://169.254.169.254/latest/user-data/'
 EC2_META_DATA_URL = 'http://169.254.169.254/latest/meta-data/'
 DEFAULT_TAGS = {'Name': 'app',
                 'Roles': 'app',
@@ -111,3 +113,27 @@ class Client(object):
                     self._tags = default
 
         return self._tags
+
+
+class UserDataClient(Client):
+
+    @classmethod
+    def get_user_data(cls):
+        try:
+            f = urllib2.urlopen(EC2_USER_DATA_URL, timeout=1)
+            return json.loads(f.read())
+        except urllib2.URLError:
+            return {}
+
+    def __init__(self, access_key, secret, region,
+                 default_tags=DEFAULT_TAGS,
+                 default_instance_id=DEFAULT_INSTANCE_ID,
+                 default_public_ip=DEFAULT_PUBLIC_IP,):
+        user_data = UserDataClient.get_user_data()
+        self._access_key = user_data['access_key'] if user_data.has_key(
+            'access_key') else access_key
+        self._secret = user_data['secret'] if user_data.has_key('secret') else secret
+        self._region = user_data['region'] if user_data.has_key('region') else region
+        self.default_tags = default_tags
+        self.default_instance_id = default_instance_id
+        self.default_public_ip = default_public_ip
