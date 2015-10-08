@@ -122,7 +122,7 @@ class UserDataClient(Client):
         try:
             f = urllib2.urlopen(EC2_USER_DATA_URL, timeout=1)
             return json.loads(f.read())
-        except urllib2.URLError:
+        except:
             return {}
 
     def __init__(self, access_key, secret, region,
