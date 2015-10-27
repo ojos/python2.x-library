@@ -104,31 +104,31 @@ class Client(object):
         if callback_url is None:
             callback_url = self._callback_url
         callback = '%s?%s' % (callback_url, urllib.urlencode(params))
-        conn = OAuthHandler(self._consumer_key, self._consumer_secret, callback)
-        url = conn.get_authorization_url()
+        auth = OAuthHandler(self._consumer_key, self._consumer_secret, callback)
+        url = auth.get_authorization_url()
 
-        return url, conn.request_token
+        return url, auth.request_token
 
     def get_token(self, oauth_token, oauth_token_secret, oauth_verifier):
-        conn = OAuthHandler(self._consumer_key, self._consumer_secret)
-        conn.request_token = {'oauth_token': oauth_token,
+        auth = OAuthHandler(self._consumer_key, self._consumer_secret)
+        auth.request_token = {'oauth_token': oauth_token,
                               'oauth_token_secret': oauth_token_secret}
 
-        conn.get_access_token(oauth_verifier)
-        self._access_token = conn.access_token
-        self._access_token_secret = conn.access_token_secret
+        auth.get_access_token(oauth_verifier)
+        self._access_token = auth.access_token
+        self._access_token_secret = auth.access_token_secret
         self._setup_apis()
 
         return self._access_token, self._access_token_secret
 
     def _setup_apis(self):
-        conn = OAuthHandler(self._consumer_key, self._consumer_secret)
-        conn.set_access_token(self._access_token, self._access_token_secret)
+        auth = OAuthHandler(self._consumer_key, self._consumer_secret)
+        auth.set_access_token(self._access_token, self._access_token_secret)
 
         if self._raw_json:
-            self._api = TwitterAPI(conn, parser=RawParser())
+            self._api = TwitterAPI(auth, parser=RawParser())
         else:
-            self._api = TwitterAPI(conn)
+            self._api = TwitterAPI(auth)
 
     def get_stream(self, listener=None):
         if self._stream is not None:
@@ -136,8 +136,8 @@ class Client(object):
             if listener is None:
                 listener = self._stream.listener
 
-        conn = OAuthHandler(self._consumer_key, self._consumer_secret)
-        conn.set_access_token(self._access_token, self._access_token_secret)
-        self._stream = ExStream(conn, listener)
+        auth = OAuthHandler(self._consumer_key, self._consumer_secret)
+        auth.set_access_token(self._access_token, self._access_token_secret)
+        self._stream = ExStream(auth, listener)
 
         return self._stream
