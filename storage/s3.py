@@ -5,6 +5,7 @@ import StringIO
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
+from ojos.misc.exceptions import ServiceUnavailableException
 from ojos.misc.utils import detect_imagetype
 from ojos.misc.validators import validate_json
 
@@ -37,16 +38,19 @@ class Client(object):
 
     def get(self, key=None, cache=False, string=True):
         key = self._get_key(key)
-        if string:
-            if self._context is None or not cache:
-                self._context = self._key.get_contents_as_string()
+        try:
+            if string:
+                if self._context is None or not cache:
+                    self._context = self._key.get_contents_as_string()
 
-            return self._context
-        else:
-            if self._file is None or not cache:
-                self._file = self._key.get_contents_to_file()
+                return self._context
+            else:
+                if self._file is None or not cache:
+                    self._file = self._key.get_contents_to_file()
 
-            return self._file
+                return self._file
+        except:
+            raise ServiceUnavailableException(message='file get failure')
 
     def put(self, context, key=None, metadata={}, public=False, string=True):
         _key = self._get_key(key)
@@ -56,12 +60,15 @@ class Client(object):
 
         policy = 'public-read' if public else 'private'
 
-        if string:
-            self._context = context
-            _key.set_contents_from_string(self._context, policy=policy)
-        else:
-            self._file = context
-            _key.set_contents_from_file(self._file, policy=policy)
+        try:
+            if string:
+                self._context = context
+                _key.set_contents_from_string(self._context, policy=policy)
+            else:
+                self._file = context
+                _key.set_contents_from_file(self._file, policy=policy)
+        except:
+            raise ServiceUnavailableException(message='file put failure')
 
         return key
 

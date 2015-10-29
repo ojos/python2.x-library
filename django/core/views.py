@@ -21,7 +21,7 @@ class BaseView(View):
         return self._response
 
     def redirect(self, url, code=302):
-        redirect = http.HttpResponseRedirectBase(url)
+        redirect = http.HttpResponseRedirect(url)
         redirect.status_code = code
         return redirect
 
