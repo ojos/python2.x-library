@@ -19,6 +19,13 @@ def time_from_i(i):
         return None
 
 
+def time_to_s(s):
+    try:
+        return datetime.datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+    except:
+        return None
+
+
 def current_timestamp_int():
     return time_to_i(datetime.datetime.now())
 
