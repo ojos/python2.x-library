@@ -101,7 +101,8 @@ class ApiView(BaseView):
         if self._response is None:
             self._response = http.HttpResponse()
             self._response['Access-Control-Allow-Origin'] = '*'
-            self._response['Access-Control-Allow-Headers'] = '*'
+            self._response['Access-Control-Allow-Headers'] =\
+                'Origin, Authorization, Accept, Content-Type'
             self._response['Access-Control-Allow-Methods'] =\
                 'PUT,DELETE,POST,GET,OPTIONS'
 
