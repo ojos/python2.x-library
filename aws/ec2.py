@@ -9,7 +9,7 @@ EC2_META_DATA_URL = 'http://169.254.169.254/latest/meta-data/'
 DEFAULT_TAGS = {'Name': 'app',
                 'Roles': 'app',
                 'Environment': 'develop'}
-DEFAULT_INSTANCE_ID = ''
+DEFAULT_INSTANCE_ID = 'localhost'
 DEFAULT_PUBLIC_IP = '127.0.0.1'
 
 
