@@ -5,6 +5,7 @@ from functools import wraps
 from time import sleep
 
 from ojos.misc.exceptions import ResponseException
+from ojos.misc.scheduler import RepeatedTimer
 
 
 # レスポンスエラーデコレータ
