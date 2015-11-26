@@ -8,6 +8,8 @@ from tweepy.auth import OAuthHandler
 from tweepy.parsers import RawParser
 from tweepy.streaming import (Stream, StreamListener)
 
+from ojos.misc.codepoint import characters
+
 
 class KThread(Thread):
     """A subclass of threading.Thread, with a kill() method."""
@@ -67,6 +69,19 @@ class Listener(StreamListener):
 
 
 class Client(object):
+
+    @classmethod
+    def in_text_limit(cls, text, limit=140):
+        words = text.split(' ')
+        l = 0
+        for w in words:
+            if w[:4] == 'http':
+                l = l + 23
+            else:
+                l = l + len(characters(w))
+        l = l + len(words) - 1
+
+        return l <= limit
 
     def __init__(self, consumer_key, consumer_secret, callback_url=None,
                  access_token=None, access_token_secret=None,
