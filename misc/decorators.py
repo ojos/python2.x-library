@@ -7,6 +7,8 @@ from time import sleep
 from ojos.misc.exceptions import ResponseException
 from ojos.misc.scheduler import RepeatedTimer
 
+logger = logging.getLogger(__name__)
+
 
 # レスポンスエラーデコレータ
 def error_response(code=500, message=None, header_code=True):
@@ -14,7 +16,7 @@ def error_response(code=500, message=None, header_code=True):
         @wraps(f)
         def callf(_self, *args, **kwargs):
             def error(exception, *args, **kwargs):
-                logging.exception(exception)
+                logger.exception(exception)
                 return _self.error(e.message, e.code, e.header_code, *args, **kwargs)
 
             try:
