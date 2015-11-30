@@ -34,6 +34,9 @@ def error_response(code=500, message=None, header_code=True):
                 if e.header_code is None:
                     e.header_code = header_code
 
+                e.query = args[0].GET.urlencode()
+                e.data = args[0].POST.urlencode()
+
                 return error(e, *args, **kwargs)
             except Exception as e:
                 e.code = code
