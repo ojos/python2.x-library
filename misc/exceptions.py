@@ -9,7 +9,7 @@ class ResponseException(Exception):
     query = None
     data = None
 
-    def __init__(self, code=None, message=None, url=None, header_code=None):
+    def __init__(self, code=None, message=None, url=None, header_code=None, query=None, data=None):
         self.code = self.code if code is None else code
         self.message = self.message if message is None else message
         self.url = self.url if url is None else url
