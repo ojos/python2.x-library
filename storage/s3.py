@@ -7,7 +7,6 @@ from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 from ojos.misc.exceptions import ServiceUnavailableException
-from ojos.misc.utils import detect_imagetype
 from ojos.misc.validators import validate_json
 
 
