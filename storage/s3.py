@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import gzip
+import logging
 import StringIO
 
 from boto.s3.connection import S3Connection
@@ -8,6 +9,8 @@ from boto.s3.key import Key
 from ojos.misc.exceptions import ServiceUnavailableException
 from ojos.misc.utils import detect_imagetype
 from ojos.misc.validators import validate_json
+
+logger = logging.getLogger(__name__)
 
 
 class Client(object):
@@ -99,7 +102,11 @@ class Client(object):
         return self.put(context, key, metadata, public)
 
     def put_image(self, context, key=None, public=True, extension=True):
-        content_type, ext = detect_imagetype(context)
+        try:
+            content_type, ext = detect_imagetype(context)
+        except TypeError as e:
+            logger.debug(context)
+            raise e
         metadata = self._get_metadata({'Content-Type': '%s' % content_type})
         if key.find('.') == -1:
             key = '%s.%s' % (key, ext) if extension else key
