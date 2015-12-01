@@ -10,8 +10,6 @@ from ojos.misc.exceptions import ServiceUnavailableException
 from ojos.misc.utils import detect_imagetype
 from ojos.misc.validators import validate_json
 
-logger = logging.getLogger(__name__)
-
 
 class Client(object):
 
@@ -102,11 +100,7 @@ class Client(object):
         return self.put(context, key, metadata, public)
 
     def put_image(self, context, key=None, public=True, extension=True):
-        try:
-            content_type, ext = detect_imagetype(context)
-        except TypeError as e:
-            logger.debug(context)
-            raise e
+        content_type, ext = detect_imagetype(context)
         metadata = self._get_metadata({'Content-Type': '%s' % content_type})
         if key.find('.') == -1:
             key = '%s.%s' % (key, ext) if extension else key
