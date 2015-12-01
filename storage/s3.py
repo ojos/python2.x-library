@@ -100,7 +100,9 @@ class Client(object):
         return self.put(context, key, metadata, public)
 
     def put_image(self, context, key=None, public=True, extension=True):
-        content_type, ext = detect_imagetype(context)
+        from PIL import Image
+        ext = Image.open(StringIO(context)).format.lower()
+        content_type = 'image/%s' % ext
         metadata = self._get_metadata({'Content-Type': '%s' % content_type})
         if key.find('.') == -1:
             key = '%s.%s' % (key, ext) if extension else key

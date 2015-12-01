@@ -112,10 +112,10 @@ def lazy_loader(name):
     return mod
 
 
-def detect_imagetype(image):
-    if image[6:10] == 'JFIF':
-        return 'image/jpeg', 'jpeg'
-    if image[0:3] == 'GIF':
-        return 'image/gif', 'gif'
-    if image[1:4] == 'PNG':
-        return 'image/png', 'png'
+# def detect_imagetype(image):
+#     if image[6:10] == 'JFIF':
+#         return 'image/jpeg', 'jpeg'
+#     if image[0:3] == 'GIF':
+#         return 'image/gif', 'gif'
+#     if image[1:4] == 'PNG':
+#         return 'image/png', 'png'
